@@ -27,20 +27,20 @@ void sensorSetup(uint8_t NumOfSamples, uint8_t Data_Output_Rate, char Measurment
             default: configA6_5 = 96;
     }
 
-    if(Data_Output_Rate <= 0.75)
+    if(Data_Output_Rate <= 0.75)    // .75 Hz
         configA4_2 = 0;
-        else if(Data_Output_Rate <= 1.5)
+        else if(Data_Output_Rate <= 1.5)    // 1.5 Hz
             configA4_2 = 4;
-            else if(Data_Output_Rate <= 3)
+            else if(Data_Output_Rate <= 3)  // 3 Hz
                 configA4_2 = 8;
-                else if(Data_Output_Rate <= 7.5)
+                else if(Data_Output_Rate <= 7.5)    // 7.5 Hz
                     configA4_2 = 12;
-                    else if(Data_Output_Rate <= 15) // Default
+                    else if(Data_Output_Rate <= 15) // 15 Hz Default
                         configA4_2 = 16;
-                        else if(Data_Output_Rate <= 30)
+                        else if(Data_Output_Rate <= 30) // 30 Hz
                             configA4_2 = 20;
                             else
-                                configA4_2 = 24;    // 75Hz
+                                configA4_2 = 24;    // 75 Hz
     
     switch(Measurment_Mode)
     {
@@ -127,17 +127,21 @@ void readValue(int16_t *AccelX, int16_t *AccelY, int16_t *AccelZ)
     *AccelX = (uint16_t)niz[0] << 8 | niz[1];
 
     HAL_I2C_Master_Transmit(&hi2c1, (DevAddress), &Accel_Yout_H, 1, HAL_MAX_DELAY);
+    HAL_Delay(50);
     HAL_I2C_Master_Receive(&hi2c1, (DevAddressRead), dataBuffer, 1, HAL_MAX_DELAY);
     niz[0] = dataBuffer[0];
     HAL_I2C_Master_Transmit(&hi2c1, (DevAddress), &Accel_Yout_L, 1, HAL_MAX_DELAY);
+    HAL_Delay(50);
     HAL_I2C_Master_Receive(&hi2c1, (DevAddressRead), dataBuffer, 1, HAL_MAX_DELAY);
     niz[1] = dataBuffer[0];
     *AccelY = (uint16_t)niz[0] << 8 | niz[1];
 
     HAL_I2C_Master_Transmit(&hi2c1, (DevAddress), &Accel_Zout_H, 1, HAL_MAX_DELAY);
+    HAL_Delay(50);
     HAL_I2C_Master_Receive(&hi2c1, (DevAddressRead), dataBuffer, 1, HAL_MAX_DELAY);
     niz[0] = dataBuffer[0];
     HAL_I2C_Master_Transmit(&hi2c1, (DevAddress), &Accel_Zout_L, 1, HAL_MAX_DELAY);
+    HAL_Delay(50);
     HAL_I2C_Master_Receive(&hi2c1, (DevAddressRead), dataBuffer, 1, HAL_MAX_DELAY);
     niz[1] = dataBuffer[0];
     *AccelZ = (uint16_t)niz[0] << 8 | niz[1];
